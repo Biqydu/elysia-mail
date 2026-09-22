@@ -15,7 +15,7 @@ Supports multiple providers behind one API so you can switch between them withou
 ## Installation
 
 ```bash
-bun add elysia-email
+bun add @biqydu/elysia-email
 ```
 
 Peer dependency:
@@ -28,7 +28,7 @@ bun add elysia
 
 ```ts
 import { Elysia } from "elysia";
-import { email } from "elysia-email";
+import { email } from "@biqydu/elysia-email";
 
 const app = new Elysia()
   .use(
