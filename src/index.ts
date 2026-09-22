@@ -8,7 +8,7 @@ const mailProviders: Record<MailPluginOptions["provider"], ProviderFn> = {
 	mailgun: mailgunProvider,
 };
 
-export const mailPlugin = (options: MailPluginOptions) => {
+export const email = (options: MailPluginOptions) => {
 	const sendEmail = async (args: SendMailArgs) => {
 		const providerFn = mailProviders[options.provider];
 
