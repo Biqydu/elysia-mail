@@ -1,6 +1,6 @@
 {
   "name": "@biqydu/elysia-email",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple, typed email sending plugin for ElysiaJS supporting multiple providers.",
   "license": "MIT",
   "author": "Biqydu <brajanpalgan5@gmail.com>",
