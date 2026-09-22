@@ -1,3 +1,4 @@
+import { EmailError } from "../error";
 import type { ProviderFn } from "../types";
 
 const toArray = (value?: string | string[]) =>
@@ -10,7 +11,9 @@ const toBase64 = (content: string | Uint8Array | Buffer) => {
 
 export const resendProvider: ProviderFn = async (options, args) => {
 	if (options.provider !== "resend") {
-		throw new Error("Invalid provider options for Resend");
+		throw new EmailError("Invalid provider options for Resend", {
+			provider: "resend",
+		});
 	}
 
 	const body: Record<string, unknown> = {
@@ -53,7 +56,12 @@ export const resendProvider: ProviderFn = async (options, args) => {
 	});
 
 	if (!response.ok) {
-		throw new Error(`Resend error: ${await response.text()}`);
+		const responseBody = await response.text();
+		throw new EmailError("Resend request failed", {
+			provider: "resend",
+			status: response.status,
+			body: responseBody,
+		});
 	}
 
 	return response.json();

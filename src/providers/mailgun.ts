@@ -1,3 +1,4 @@
+import { EmailError } from "../error";
 import type { ProviderFn } from "../types";
 
 const toArray = (value?: string | string[]) =>
@@ -5,11 +6,15 @@ const toArray = (value?: string | string[]) =>
 
 export const mailgunProvider: ProviderFn = async (options, args) => {
 	if (options.provider !== "mailgun") {
-		throw new Error("Invalid provider options for Mailgun");
+		throw new EmailError("Invalid provider options for Mailgun", {
+			provider: "mailgun",
+		});
 	}
 
 	if (!options.domain) {
-		throw new Error('Mailgun requires "domain"');
+		throw new EmailError('Mailgun requires "domain"', {
+			provider: "mailgun",
+		});
 	}
 
 	const baseApiUrl =
@@ -78,7 +83,12 @@ export const mailgunProvider: ProviderFn = async (options, args) => {
 	});
 
 	if (!response.ok) {
-		throw new Error(`Mailgun error: ${await response.text()}`);
+		const responseBody = await response.text();
+		throw new EmailError("Mailgun request failed", {
+			provider: "mailgun",
+			status: response.status,
+			body: responseBody,
+		});
 	}
 
 	return response.json();
