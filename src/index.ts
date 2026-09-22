@@ -4,6 +4,9 @@ import { mailgunProvider } from "./providers/mailgun";
 import { resendProvider } from "./providers/resend";
 import type { MailPluginOptions, ProviderFn, SendMailArgs } from "./types";
 
+export { EmailError } from "./error";
+export type { Attachment, MailPluginOptions, SendMailArgs } from "./types";
+
 const mailProviders: Record<MailPluginOptions["provider"], ProviderFn> = {
 	resend: resendProvider,
 	mailgun: mailgunProvider,
