@@ -15,7 +15,8 @@
     }
   },
   "scripts": {
-    "build": "bun build.ts"
+    "build": "bun build.ts",
+    "prepublishOnly": "bun run build"
   },
   "files": [
     "dist"
