@@ -189,6 +189,50 @@ email({
 });
 ```
 
+## Error handling
+
+Failed requests and invalid input throw `EmailError`.
+
+```ts
+import { EmailError, email } from "@biqydu/elysia-email";
+import { Elysia } from "elysia";
+
+new Elysia()
+  .use(
+    email({
+      provider: "resend",
+      apiKey: process.env.RESEND_API_KEY!,
+      from: "Acme <onboarding@resend.dev>",
+    }),
+  )
+  .onError(({ error, set }) => {
+    if (error instanceof EmailError) {
+      set.status = 502;
+      return {
+        error: error.message,
+        provider: error.provider,
+        status: error.status,
+      };
+    }
+  });
+```
+
+### `EmailError` fields
+
+| Field      | Type      | Description                         |
+| ---------- | --------- | ----------------------------------- |
+| `message`  | `string`  | Human-readable error message        |
+| `provider` | `string`  | Provider that failed (`resend`, …)  |
+| `status`   | `number?` | HTTP status from the provider API   |
+| `body`     | `string?` | Raw response body from the provider |
+
+Examples of when it is thrown:
+
+- missing `html` and `text`
+- unsupported provider
+- provider API returned a non-OK response
+- invalid provider configuration (e.g. Mailgun without `domain`)
+
 ## Notes
 
 - Use a verified domain for production sending.
